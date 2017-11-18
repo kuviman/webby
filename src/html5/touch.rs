@@ -26,7 +26,7 @@ pub fn set_touchstart_callback<F: FnMut(TouchStartEvent)>(callback: F) {
     where
         F: FnMut(TouchStartEvent),
     {
-        let event = *event;
+        let event = &*event;
         let mut callback = Box::<Box<F>>::from_raw(callback as *mut _);
         let mut touches = Vec::with_capacity(event.numTouches as usize);
         for i in 0..event.numTouches as usize {
@@ -62,7 +62,7 @@ pub fn set_touchmove_callback<F: FnMut(TouchMoveEvent)>(callback: F) {
     where
         F: FnMut(TouchMoveEvent),
     {
-        let event = *event;
+        let event = &*event;
         let mut callback = Box::<Box<F>>::from_raw(callback as *mut _);
         let mut touches = Vec::with_capacity(event.numTouches as usize);
         for i in 0..event.numTouches as usize {

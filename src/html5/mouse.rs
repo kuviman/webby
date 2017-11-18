@@ -40,7 +40,7 @@ pub fn set_mousedown_callback<F: FnMut(MouseDownEvent)>(callback: F) {
         where
             F: FnMut(MouseDownEvent),
     {
-        let event = *event;
+        let event = &*event;
         if let Some(button) = MouseButton::from(event.button) {
             let mut callback = Box::<Box<F>>::from_raw(callback as *mut _);
             let canvas_pos = into_canvas_pos(vec2(event.canvasX, event.canvasY));
@@ -74,7 +74,7 @@ pub fn set_mouseup_callback<F: FnMut(MouseUpEvent)>(callback: F) {
         where
             F: FnMut(MouseUpEvent),
     {
-        let event = *event;
+        let event = &*event;
         if let Some(button) = MouseButton::from(event.button) {
             let mut callback = Box::<Box<F>>::from_raw(callback as *mut _);
             let canvas_pos = into_canvas_pos(vec2(event.canvasX, event.canvasY));
@@ -107,7 +107,7 @@ pub fn set_mousemove_callback<F: FnMut(MouseMoveEvent)>(callback: F) {
         where
             F: FnMut(MouseMoveEvent),
     {
-        let event = *event;
+        let event = &*event;
         let mut callback = Box::<Box<F>>::from_raw(callback as *mut _);
         let canvas_pos = into_canvas_pos(vec2(event.canvasX, event.canvasY));
         callback(MouseMoveEvent { canvas_pos });

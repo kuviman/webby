@@ -27,7 +27,7 @@ pub fn set_wheel_callback<F: FnMut(WheelEvent)>(callback: F) {
     where
         F: FnMut(WheelEvent),
     {
-        let event = *event;
+        let event = &*event;
         let mut callback = Box::<Box<F>>::from_raw(callback as *mut _);
         let canvas_pos = into_canvas_pos(vec2(event.mouse.canvasX, event.mouse.canvasY));
         callback(WheelEvent {

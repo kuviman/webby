@@ -40,7 +40,7 @@ pub fn set_keydown_callback<F: FnMut(KeyDownEvent)>(callback: F) {
         where
             F: FnMut(KeyDownEvent),
     {
-        let event = *event;
+        let event = &*event;
         let key = Key::from(&event);
         let mut callback = Box::<Box<F>>::from_raw(callback as *mut _);
         callback(KeyDownEvent { key });
@@ -67,7 +67,7 @@ pub fn set_keyup_callback<F: FnMut(KeyUpEvent)>(callback: F) {
         where
             F: FnMut(KeyUpEvent),
     {
-        let event = *event;
+        let event = &*event;
         let key = Key::from(&event);
         let mut callback = Box::<Box<F>>::from_raw(callback as *mut _);
         callback(KeyUpEvent { key });
