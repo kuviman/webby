@@ -1,0 +1,12 @@
+[package]
+name = "webby"
+version = "0.1.0"
+authors = ["kuviman <kuviman@gmail.com>"]
+
+[dependencies]
+serde = "1.0"
+serde_json = "1.0"
+url = "1.5.1"
+emscripten-sys = { path = "../emscripten-sys" }
+ugli = { path = "../ugli" }
+prelude = { path = "../prelude" }
