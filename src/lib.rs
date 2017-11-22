@@ -4,23 +4,9 @@ extern crate serde;
 extern crate serde_json;
 extern crate url;
 pub extern crate emscripten;
-extern crate ugli;
 extern crate prelude;
 
 pub(crate) use prelude::*;
-
-pub fn create_gl_context() -> Result<ugli::Context, emscripten::HtmlError> {
-    let context = emscripten::webgl::Context::create(
-        emscripten::Selector::Canvas, &emscripten::webgl::ContextAttributes {
-            alpha: false,
-            antialias: false,
-            preserve_drawing_buffer: false,
-            ..default()
-        })?;
-    context.make_current()?;
-    mem::forget(context);
-    Ok(ugli::Context::init(emscripten::get_proc_address).expect("Could not initialize OpenGL context"))
-}
 
 pub fn get_query_parameters() -> HashMap<String, Vec<String>> {
     let url = emscripten::run_script_string("window.location.href");
