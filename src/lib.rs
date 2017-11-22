@@ -10,11 +10,13 @@ extern crate prelude;
 pub(crate) use prelude::*;
 
 pub fn create_gl_context() -> Result<ugli::Context, emscripten::HtmlError> {
-    let mut attributes = emscripten::webgl::ContextAttributes::default();
-    attributes.alpha = false;
-    attributes.antialias = false;
-    attributes.preserve_drawing_buffer = true;
-    let context = emscripten::webgl::Context::create(emscripten::Selector::Canvas, &attributes)?;
+    let context = emscripten::webgl::Context::create(
+        emscripten::Selector::Canvas, &emscripten::webgl::ContextAttributes {
+            alpha: false,
+            antialias: false,
+            preserve_drawing_buffer: false,
+            ..default()
+        })?;
     context.make_current()?;
     mem::forget(context);
     Ok(ugli::Context::init(emscripten::get_proc_address).expect("Could not initialize OpenGL context"))
