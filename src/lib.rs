@@ -21,7 +21,7 @@ pub fn create_gl_context() -> Result<ugli::Context, emscripten::HtmlError> {
 }
 
 pub fn get_query_parameters() -> HashMap<String, Vec<String>> {
-    let url = unsafe { emscripten::run_script_string("window.location.href") };
+    let url = emscripten::run_script_string("window.location.href");
     let url = url::Url::parse(&url).expect("Failed to parse window.location.href");
     let mut result = HashMap::<String, Vec<String>>::new();
     for (key, value) in url.query_pairs() {
@@ -49,11 +49,9 @@ macro_rules! format_placeholders {
 macro_rules! run_js {
     ($($($f:ident).+ ( $($args:expr),* );)*) => (
         $(
-            unsafe {
-                $crate::emscripten::run_script(&format!(
-                    concat!(stringify!($($f).+), "(", format_placeholders!($($args),*), ")"),
-                    $($crate::IntoJson::into_json($args)),*));
-            }
+            $crate::emscripten::run_script(&format!(
+                concat!(stringify!($($f).+), "(", format_placeholders!($($args),*), ")"),
+                $($crate::IntoJson::into_json($args)),*));
         )*
     )
 }
