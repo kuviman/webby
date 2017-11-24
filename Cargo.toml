@@ -1,0 +1,12 @@
+[package]
+name = "webby-macro"
+version = "0.1.0"
+authors = ["kuviman <kuviman@gmail.com>"]
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = "*"
+quote = "*"
+proc-macro-hack = "*"
