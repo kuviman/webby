@@ -32,14 +32,14 @@ impl<Args, F: StableFnMut<Args>> From<F> for Callback<Args, F> {
     }
 }
 
-pub trait CallbackArg {
+pub unsafe trait CallbackArg {
     const SIGNATURE: char;
     type InteropType;
     fn js_conversion(name: &str) -> String;
     fn from(val: Self::InteropType) -> Self;
 }
 
-impl CallbackArg for i32 {
+unsafe impl CallbackArg for i32 {
     const SIGNATURE: char = 'i';
     type InteropType = c_int;
     fn js_conversion(name: &str) -> String {
@@ -50,7 +50,7 @@ impl CallbackArg for i32 {
     }
 }
 
-impl CallbackArg for bool {
+unsafe impl CallbackArg for bool {
     const SIGNATURE: char = 'i';
     type InteropType = c_int;
     fn js_conversion(name: &str) -> String {
