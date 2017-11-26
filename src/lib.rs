@@ -2,20 +2,16 @@
 
 #[macro_use]
 extern crate proc_macro_hack;
-
 #[allow(unused_imports)]
 #[macro_use]
 extern crate webby_macro;
-
-#[doc(hidden)]
-pub use webby_macro::*;
-
 extern crate serde;
 extern crate serde_json;
 extern crate url;
 pub extern crate emscripten;
 extern crate prelude;
 
+pub use webby_macro::*;
 pub(crate) use prelude::*;
 
 mod js;
