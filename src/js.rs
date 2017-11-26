@@ -23,7 +23,21 @@ pub struct Callback<Args, F: StableFnMut<Args> + 'static> {
     phantom_data: PhantomData<Args>,
 }
 
-impl<Args, F: StableFnMut<Args>> From<F> for Callback<Args, F> {
+impl<Args, F: StableFnMut<Args> + 'static> From<F> for Callback<Args, F> {
+    fn from(f: F) -> Self {
+        Self {
+            f,
+            phantom_data: PhantomData,
+        }
+    }
+}
+
+pub struct CallbackOnce<Args, F: StableFnOnce<Args> + 'static> {
+    f: F,
+    phantom_data: PhantomData<Args>,
+}
+
+impl<Args, F: StableFnOnce<Args> + 'static> From<F> for CallbackOnce<Args, F> {
     fn from(f: F) -> Self {
         Self {
             f,
@@ -87,6 +101,16 @@ macro_rules! impl_for_kind {
                     (wrapper::<$($name,)* F> as c_int).into_json(),
                     (Box::into_raw(boxed) as c_int).into_json(),
                     js_conversions)
+            }
+        }
+        impl<$($name:CallbackArg,)* F:StableFnOnce<($($name,)*)>> IntoJson for CallbackOnce<($($name,)*),F> {
+            #[allow(warnings)]
+            fn into_json(self) -> String {
+                let mut callback = Some(self.f);
+                Callback::from(move |$($name:$name),*| {
+                    mem::replace(&mut callback, None).expect("CallbackOnce already been called")
+                        .call_once(($($name,)*))
+                }).into_json()
             }
         }
     }
