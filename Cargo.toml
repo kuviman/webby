@@ -7,7 +7,7 @@ authors = ["kuviman <kuviman@gmail.com>"]
 serde = "1.0"
 serde_json = "1.0"
 url = "1.5.1"
-proc-macro-hack = "*"
+proc-macro-hack = "0.4.0"
 emscripten = { path = "../emscripten" }
 prelude = { path = "../prelude" }
 webby-macro = { path = "../webby-macro" }
