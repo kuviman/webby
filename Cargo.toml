@@ -7,6 +7,6 @@ authors = ["kuviman <kuviman@gmail.com>"]
 proc-macro = true
 
 [dependencies]
-syn = "*"
-quote = "*"
-proc-macro-hack = "*"
+syn = "0.11.11"
+quote = "0.3.15"
+proc-macro-hack = "0.4.0"
