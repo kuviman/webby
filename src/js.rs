@@ -77,11 +77,13 @@ unsafe impl CallbackArg for bool {
 
 macro_rules! impl_for_kind {
     ($($name:ident),*) => {
-        impl<$($name:CallbackArg,)* F:StableFnMut<($($name,)*)>> IntoJson for Callback<($($name,)*),F> {
+        impl<$($name:CallbackArg,)* F:StableFnMut<($($name,)*)>> IntoJson
+            for Callback<($($name,)*),F> {
             #[allow(warnings)]
             fn into_json(self) -> String {
                 let boxed = Box::new(self.f);
-                extern "C" fn wrapper<$($name:CallbackArg,)* F:StableFnMut<($($name,)*)>>(f: c_int $(,$name:$name::InteropType)*) {
+                extern "C" fn wrapper<$($name,)* F>(f: c_int $(,$name:$name::InteropType)*)
+                    where $($name: CallbackArg,)* F: StableFnMut<($($name,)*)> {
                     let mut boxed = unsafe { Box::from_raw(f as *mut F) };
                     boxed.call_mut(($($name::from($name),)*));
                     mem::forget(boxed);
@@ -103,7 +105,8 @@ macro_rules! impl_for_kind {
                     js_conversions)
             }
         }
-        impl<$($name:CallbackArg,)* F:StableFnOnce<($($name,)*)>> IntoJson for CallbackOnce<($($name,)*),F> {
+        impl<$($name:CallbackArg,)* F:StableFnOnce<($($name,)*)>> IntoJson
+            for CallbackOnce<($($name,)*),F> {
             #[allow(warnings)]
             fn into_json(self) -> String {
                 let mut callback = Some(self.f);
@@ -118,6 +121,6 @@ macro_rules! impl_for_kind {
 
 impl_for_kind!();
 impl_for_kind!(A);
-impl_for_kind!(A,B);
-impl_for_kind!(A,B,C);
-impl_for_kind!(A,B,C,D);
+impl_for_kind!(A, B);
+impl_for_kind!(A, B, C);
+impl_for_kind!(A, B, C, D);

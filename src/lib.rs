@@ -1,15 +1,15 @@
 #![deny(warnings)]
 
+extern crate prelude;
 #[macro_use]
 extern crate proc_macro_hack;
-#[allow(unused_imports)]
-#[macro_use]
-extern crate webby_macro;
 extern crate serde;
 extern crate serde_json;
 extern crate url;
+#[allow(unused_imports)]
+#[macro_use]
+extern crate webby_macro;
 pub extern crate emscripten;
-extern crate prelude;
 
 pub use webby_macro::*;
 pub(crate) use prelude::*;
