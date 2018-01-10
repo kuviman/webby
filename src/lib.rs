@@ -1,8 +1,8 @@
 #[macro_use]
 extern crate proc_macro_hack;
-extern crate syn;
 #[macro_use]
 extern crate quote;
+extern crate syn;
 
 proc_macro_expr_impl! {
     pub fn js_impl(input: &str) -> String {
@@ -15,7 +15,10 @@ fn js_impl_impl(input: &str) -> String {
     let fmt = syn::Token::Literal(syn::Lit::Str(js_format(&tokens), syn::StrStyle::Cooked));
     let mut subst = Vec::new();
     js_subst(&mut subst, &tokens);
-    format!("::webby::run_script({})", quote!(&format!(#fmt #(,::webby::IntoJson::into_json(#subst))*)))
+    format!(
+        "::webby::run_script({})",
+        quote!(&format!(#fmt #(,::webby::IntoJson::into_json(#subst))*))
+    )
 }
 
 fn js_format(input: &[syn::TokenTree]) -> String {
