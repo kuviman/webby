@@ -1,0 +1,19 @@
+language: rust
+install:
+  - sudo apt install emscripten
+  - rustup target add wasm32-unknown-emscripten
+script:
+  - cargo build --verbose --all --target wasm32-unknown-emscripten
+before_deploy:
+  - cargo doc --no-deps --all --target wasm32-unknown-emscripten
+  - >-
+    echo '<meta http-equiv=refresh content=0;url=webby/index.html>' >
+    target/wasm32-unknown-emscripten/doc/index.html
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $TOKEN
+  keep-history: true
+  local-dir: target/wasm32-unknown-emscripten/doc
+  on:
+    branch: master
